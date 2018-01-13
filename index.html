@@ -34,9 +34,6 @@
         margin: 0;
       }
 
-      #NavigationBar {
-        overflow: auto;
-      }
       ul {
         padding-left: 0px;
       }
@@ -60,6 +57,24 @@
         cursor: pointer;
         color: #333333;
       }
+
+      a, a:active, a:focus, a:visited {
+        text-decoration: none;
+        color: #333333;
+      }
+
+      .tab-content.active{
+          display: block;
+      }
+
+      .tab-content.hide{
+          display: none;
+      }
+
+      #NavigationBar {
+        overflow: auto;
+        margin: 20px;
+      }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
     <script src="./main.js"></script>
@@ -69,14 +84,17 @@
     <h2>Group 1 - Benchmark</h2>
     <div id="NavigationBar">
         <ul>
-            <li><button onclick="switchContent(0)"><i class="fa fa-info" aria-hidden="true"></i> Project Introduction</button></li>
-            <li><button onclick="switchContent(1)"><i class="fa fa-star" aria-hidden="true"></i> Features Overview</button></li>
-            <li><button onclick="switchContent(2)"><i class="fa fa-pie-chart" aria-hidden="true"></i> Preprocessing</button></li>
-            <li><button onclick="switchContent(3)"><i class="fa fa-wrench" aria-hidden="true"></i> Apply Models</button></li>
-            <li><button onclick="switchContent(4)"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Slides</button></li>
-            <li><button onclick="switchContent(5)"><i class="fa fa-code" aria-hidden="true"></i> Sourcecode</button></li>
+            <li><button onclick="switchContent('tab-0')"><i class="fa fa-info" aria-hidden="true"></i> Project Introduction</button></li>
+            <li><button onclick="switchContent('tab-1')"><i class="fa fa-star" aria-hidden="true"></i> Features Overview</button></li>
+            <li><button onclick="switchContent('tab-2')"><i class="fa fa-pie-chart" aria-hidden="true"></i> Preprocessing</button></li>
+            <li><button onclick="switchContent('tab-3')"><i class="fa fa-wrench" aria-hidden="true"></i> Apply Models</button></li>
+            <li><button><a href="./DataMining.pdf" target="blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Slides</a></button></li>
+            <li><button><i class="fa fa-code" aria-hidden="true"></i> Sourcecode</button></li>
         </ul>
     </div>
-    <!-- <script src="/bundle.js"></script> -->
+    <div id="tab-0" class="tab-content active">0</div>
+    <div id="tab-1" class="tab-content hide">1</div>
+    <div id="tab-2" class="tab-content hide">2</div>
+    <div id="tab-3" class="tab-content hide">3</div>
   </body>
 </html>
