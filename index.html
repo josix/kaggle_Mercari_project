@@ -62,6 +62,12 @@
         margin: 5px 0px;
       }
 
+      div.image-block {
+        display: flex;
+        margin: 10px;
+        justify-content: center;
+      }
+
       div.tab-content{
         display: flex;
         flex-direction: column;
@@ -109,9 +115,9 @@
         font-size: 12px;
       }
 
-      #formula-block {
-        display: flex;
-        justify-content: center;
+      #competition-image {
+        width: 70%;
+        height: 70%;
       }
 
       #formula-image {
@@ -138,6 +144,9 @@
     <div id="tab-0" class="tab-content active">
       <h2 class="content-title">Project Introduction</h2>
       <div class="content">
+        <div class="image-block">
+            <img id="competition-image" alt="competition-image" src="./img/competition.png" />
+        </div>
         <p>題目說明</p>
         <p>Dataset: Kaggle - Mercari Price Suggestion Challenge</p>
         <p>Macari為一個網路二手交易平台，而這次的dataset便是其提供於kaggle上的資料，資料包含了商品名稱、商品狀態、貨運、拍賣者描述、商品類別等... 其中許多attributes都是文字，所以這次的project主要考驗的是如何處裡文字，已達到準確的價格預測。</p>
@@ -145,7 +154,7 @@
         <p>Evaluation</p>
         <p>The evaluation metric for this competition is Root Mean Squared Logarithmic Error.</p>
         <p>The RMSLE is calculated as</p>
-        <div id="formula-block">
+        <div class="image-block">
           <img id="formula-image" alt="RMSLE formula" src="./img/formula.png" />
         </div>
         <p>Where:</p>
