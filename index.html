@@ -17,15 +17,10 @@
         border: 1px black;
       }
 
-      html {
-        height: 100vh;
-      }
-
       body {
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-height: 100vh;
         position: relative;
         background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
       }
@@ -42,7 +37,6 @@
         display: inline-block;
         padding: 5px 5px;
         border-radius: 5px;
-        background-color: #e2e4e6;
         color: #fff;
         margin-right: 20px;
         box-shadow: #d6dadc;
@@ -63,18 +57,46 @@
         color: #333333;
       }
 
-      .tab-content.active{
-          display: block;
+      div.tab-content{
+        display: flex;
+        flex-direction: row;
+        min-height: 800px;
+        width: 1000px;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+        background-color: #fefefe;
+        border-radius: 6px;
       }
 
       .tab-content.hide{
-          display: none;
+        display: none;
+      }
+
+      h2.content-title {
+        display: flex;
+        margin: -30px 15px 0px 15px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        height: 55px;
+        z-index: 3;
+        background-image: linear-gradient(60deg, #75b3ec, #457fca);
+        box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+        align-items: center;
+        justify-content: center;
+        color: #fefefe;
       }
 
       #NavigationBar {
         overflow: auto;
-        margin: 20px;
+        margin: 40px;
       }
+
+      #footer-message {
+        color: #0f0f0f;
+        font-weight: 200;
+        margin: 5px;
+        font-size: 12px;
+      }
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
     <script src="./main.js"></script>
@@ -92,9 +114,18 @@
             <li><button><i class="fa fa-code" aria-hidden="true"></i> Sourcecode</button></li>
         </ul>
     </div>
-    <div id="tab-0" class="tab-content active">0</div>
-    <div id="tab-1" class="tab-content hide">1</div>
-    <div id="tab-2" class="tab-content hide">2</div>
-    <div id="tab-3" class="tab-content hide">3</div>
+    <div id="tab-0" class="tab-content active">
+      <h2 class="content-title">Project Introduction</h2>
+    </div>
+    <div id="tab-1" class="tab-content hide">
+      <h2 class="content-title">Features Overview</h2>
+    </div>
+    <div id="tab-2" class="tab-content hide">
+      <h2 class="content-title">Preprocessing</h2>
+    </div>
+    <div id="tab-3" class="tab-content hide">
+      <h2 class="content-title">Apply Models</h2>
+    </div>
   </body>
+  <span id="footer-message">Group Members: 王選仲(法科碩二)、王韋勝(地政四)、張銘仁(資科三)、林建甫(資科三)、張為淳(資管五)</span>
 </html>
