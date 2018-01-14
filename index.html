@@ -78,6 +78,11 @@
 
       tr:hover {background-color:#f5f5f5;}
 
+      hr {
+        width: 100%;
+        border: 1px solid #DDDD;
+      }
+
       div.image-block {
         display: flex;
         flex-direction: column;
@@ -180,6 +185,11 @@
       #correlation_plot {
         width: 80%;
         height: 80%;  
+      }
+
+      #RNN_DNN {
+        width: 85%;
+        height: 85%;
       }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
@@ -298,7 +308,37 @@
     <div id="tab-3" class="tab-content hide">
       <h2 class="content-title">Apply Models</h2>
       <div class="content">
-        
+        <p>一、XGBoost</p>
+        <p>Performance: 0.61</p>
+        <p>Reason:</p>
+        <p>Memory: X should be calculated in advance. One hot for each term => word2vec</p>
+        <p>XGBoost: not good at Linear model.</p>
+        <p>起初，由於課堂上並沒有對深度學習進行介紹，因此先使用比較傳統祭器學習的方法XGBoost找出Baseline。不過實做過後發現效果非常不好，主要分析原因有二，其一文字為基礎的變數，由於記憶體有限的因素，沒有辦法使用onehot encoding準確地將每一個字變成一個維度，並將每一個句子在空間中的位置找出來，而使用word2vec的情況下，將導致太多個字的句子(主要發生在name以及item_description兩個欄位)在直接將每一個字的向量相加的情況下，導致不好的效果。其二，由於Random Forest原先僅能被設計出來僅能處理分類問題，有網路上的評論說XGBoost因此在處理線性問題時，其效果並沒有在處理分類問題來的好。</p>
+        <hr>
+        <p>二、RNN+DNN</p>
+        <p>Performance: 0.44</p>
+        <p>Reason:</p>
+        <p>Embedding layer help to save memory.</p>
+        <p>RNN helps to memorize all words in the sentence.</p>
+        <p>DNN helps to predict precise price.</p>
+        <div class="image-block">
+          <img id="RNN_DNN" src="./img/RNN_DNN.png" />
+        </div>
+        <p>(一)特徵值: </p>
+        <p>由於整個深度學習的模型龐大複雜，因此在此畫圖解釋。首先，我們透過特徵值工程(Feature Engineering)篩選出七個主要的特徵值，其中有三個作文純文字特徵值、三個類別型特徵值、一個布林值。這邊必須特別說明的是，有一些特徵值並沒有被我們放入最終的模型中。
+            文字欄位的word2vec: 其一，因為要將每一個字的向量都加起來，運算時間上非常吃力，且比賽有一個小時運算時間的限制，因此，最終並沒有將其納入滲度學習的模型Input中。
+            category_split欄位: 上面的category是直接將帶有斜線的原始類別集合(如'Women/Beauty/Handmade')作為一個類別，至於做過split的類別，由於其在計算上並沒有辦法增加模型的表現效果，就沒有將其放入我們最後的模型中了。</p>
+        <p>(二)DNN Input: </p>
+        <p>回到模型的建構上，以下分別針對不同型態的欄位說明之。
+            純文字型態: 首先透過Keras中內建的texts_to_sequences，把所有文字編碼，並將文字轉換成編碼。再來，編碼本身會作為模型的Input，模型會直接將編碼轉換成特定長度的Embedding向量。第三部則是，透過Keras中的GRU，使用RNN模型預測一個特定長度的向量作為DNN的Input。
+            類別型態: 首先將每一個類別Embedding到特定長度的向量上，再將其作為DNN的Input。
+            布林值: 直接作為DNN的Input。</p>
+        <p>(三)DNN: </p>
+        <p>最後，建置一個三層的DNN模型，前面兩層皆使用Relu作為激發函數(activiate function)，最後一層因為要預測的是連續變數price，因此使用linear作為激發函數。</p>
+        <p>(四)總結: </p>
+        <p>總體而言，最後這個模型的表現效果相對較好，主要原因在於，在深度學習的模型中，Input只要放入轉換成Index的文字，而不需真正的轉化出一個非常高維度的向量(onehot encoding)，再放入模型中訓練，因此整個name以及description中每一個字都很精準的考慮進去。此外，RNN模型使用上，將文字前後的意義考慮進去之後，比較可以精準的對於文義進行理解再做出預測。最後，DNN在於連續型變數的預測上有比較多參數調整的空間，也較XGBoost來的彈性。
+            不過，仍然很難達到很精準預測的效果，其主要原因來自於，二手交易商品的價格本身就具有一定程度的不穩定性，比賽中給予的特徵值仍然很難有效的解釋商品的價格。舉例來說，商品已經使用多久、商品的折舊程度、商品的受損情形或是商品圖片，可能都會是很重要的決定二手商品價格的資訊，但是這些資訊有時候很難量化紀錄，或是在比賽中提供。
+            </p>
       </div>
     </div>
   </body>
