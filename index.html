@@ -155,12 +155,12 @@
         height: 50%;
       }
 
-      #featureOverview-1{
+      #featureOverview-1 {
         width: 110%;
         height: 110%;
       }
 
-      #featureOverview-2{
+      #featureOverview-2 {
         width: 80%;
         height: 80%;
       }
@@ -187,10 +187,11 @@
         height: 80%;  
       }
 
-      #RNN_DNN {
+      #RNN_DNN, #log_price, #missing_value, #missing_valu_observed, #fillna {
         width: 85%;
         height: 85%;
       }
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
     <script src="./main.js"></script>
@@ -218,6 +219,7 @@
         <p>Dataset: Kaggle - Mercari Price Suggestion Challenge</p>
         <p>Macari為一個網路二手交易平台, 而這次的dataset便是其提供於kaggle上的資料，資料包含了商品名稱、商品狀態、貨運、拍賣者描述、商品類別等... 其中許多attributes都是文字, 所以這次的project主要考驗的是如何處裡文字, 已達到準確的價格預測。</p>
         <br>
+        <hr>
         <p>二、Evaluation</p>
         <p>The evaluation metric for this competition is Root Mean Squared Logarithmic Error.</p>
         <p>The RMSLE is calculated as</p>
@@ -274,6 +276,7 @@
           <img id="featureOverview-1" src="./img/featureOverview-1.png" />
           <img id="featureOverview-2"  src="./img/featureOverview-2.png" />
         </div>
+        <hr>
         <p>三、General category 價錢分布</p>
         <p>以美妝、電子產品及古著還有女裝最多高價商品, 但是主要分類的商品平均價格相差不多, 而橘色為含運的商品, 藍色為不含運費的商品, 基本上並沒有除了上述的四種分類, 其他的品項有含運的商品價格偏高。</p>
         <p>( 0 : Beauty
@@ -288,11 +291,13 @@
         <div class="image-block">
             <img id="category_distribution" src="./img/category_distribution.png" />
         </div>
+        <hr>
         <p>四、Category cluster 結果</p>
         <p>其中個數比較少的群其實群內的分類都十分相似, 如第12群['Outdoors', 'Artwork', 'Posters & Prints', 'Painting', 'Paintings', 'Drawings', 'Magazines', 'Patterns', 'Sculptures', 'Magnets', 'Bookmark', 'Photographs', 'Postcard', 'Illustration', 'Frames', 'Collages', 'Portraits'] 及第19群 ['NFL', 'MLB', 'NCAA', 'NBA', 'Bowl', 'NHL', 'Pitcher', 'Draft Stoppers']</p>
         <div class="image-block">
             <img id="cluster_outcome" src="./img/cluster_outcome.png" />
         </div>
+        <hr>
         <p>五、Correlation plot</p>
         <p>這裡可以看到, General category與價格關係的正相關最大, 而商品名稱及敘述長度為負相關, 而有含運費的商品事實上價格並沒有比較高。</p>
         <div class="image-block">
@@ -303,6 +308,46 @@
     <div id="tab-2" class="tab-content hide">
       <h2 class="content-title">Preprocessing</h2>
       <div class="content">
+        <p>ㄧ、Log Price</p>
+        <p>由於price的值普遍偏低，我們將其+1(smoothing)取log後再train，也的確能夠提升準確率。</p>
+        <div class="image-block">
+          <img id="log_price" src="./img/log_price.png" />
+        </div>
+        <hr>
+        <p>二、Missing Value</p>
+        <p>由圖中可以發現brand_name的missing比例非常高(約0.45)。</p>
+        <div class="image-block">
+          <img src="./img/missing_value.png" alt="missing_value" id="missing_value">
+        </div>
+        <p>由於miss的data都是文字，故我們處裡的方法為將nan的欄位填上"missing"的字串。</p>
+        <div class="image-block">
+          <img src="./img/missing_valu_observed.png" alt="missing_valu_observed" id="missing_valu_observed">
+        </div>
+        <p>For all string variables: </p>
+        <p>nan => ‘missing’</p>
+        <p>‘no description’ => ‘no description’</p>
+        <div class="image-block">
+          <img src="./img/fillna.png" alt="fillna" id="fillna">
+        </div>
+        <hr>
+        <p>三、LabelEncoding</p>
+        <p>在label encoding的過程，我們將unique的字串，map到單一的編號上，並將這對應的編號存到新的features "brand"及"category"中，並保留原本的feature做後續的preprocess。</p>
+        <p>doing labelencoding onto brand_name & category_name</p>
+        <p>unique category name: 1311</p>
+        <p>encode category to a number between [0, 1310]</p>
+        <p>unique brand name: 5290</p>
+        <p>encode brand to a number between [0, 5289]</p>
+        <hr>
+        <p>四、Spliting category</p>
+        <p>在category_name的欄位中，可能同時包含多個tag，在Spliting category的過程，我們將這些tags分開來，已獲得更精確的feature。
+            接著，將分開出的tags做labelencoding。
+            Example: Women/Beauty/Handmade -> [15, 24, 1552]
+            </p>
+        <hr>
+        <p>五、One_hot encoding</p>
+        <p>1. 將training data & test data的文字欄位(category_name, item_description, name), 集合成一個corpus
+            2. 利用這個corpus對此三個欄位做onehot_encoding
+            </p>
       </div>
     </div>
     <div id="tab-3" class="tab-content hide">
