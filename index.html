@@ -62,10 +62,28 @@
         margin: 5px 0px;
       }
 
+      table {
+        margin: 10px 5px 10px -50px;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      th, td {
+        width: 15px;
+        padding: 12px 8px;
+        vertical-align: middle;
+        text-align: left;
+        border-bottom: #3f3f3f solid 0.5px;
+      }
+
+      tr:hover {background-color:#f5f5f5;}
+
       div.image-block {
         display: flex;
+        flex-direction: column;
         margin: 10px;
         justify-content: center;
+        align-items: center;
       }
 
       div.tab-content{
@@ -101,6 +119,13 @@
         display: flex;
         flex-direction: column;
         margin: 5px 75px;
+        margin-bottom: 50px;
+      }
+
+      div.tableStyle {
+        display: flex;
+        margin: 10px;
+        justify-content: center;
       }
 
       #NavigationBar {
@@ -124,6 +149,38 @@
         width: 50%;
         height: 50%;
       }
+
+      #featureOverview-1{
+        width: 110%;
+        height: 110%;
+      }
+
+      #featureOverview-2{
+        width: 80%;
+        height: 80%;
+      }
+
+      #label {
+        width: 10%;
+        height: 10%;
+        position: relative;
+        right: -780px;
+      }
+
+      #category_distribution {
+        width: 110%;
+        height: 110%;
+      }
+
+      #cluster_outcome {
+        width: 100%;
+        height: 100%;
+      }
+
+      #correlation_plot {
+        width: 80%;
+        height: 80%;  
+      }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
     <script src="./main.js"></script>
@@ -138,7 +195,7 @@
             <li><button onclick="switchContent('tab-2')"><i class="fa fa-pie-chart" aria-hidden="true"></i> Preprocessing</button></li>
             <li><button onclick="switchContent('tab-3')"><i class="fa fa-wrench" aria-hidden="true"></i> Apply Models</button></li>
             <li><button><a href="./DataMining.pdf" target="blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Slides</a></button></li>
-            <li><button><i class="fa fa-code" aria-hidden="true"></i> Sourcecode</button></li>
+            <li><button><a href="." target="blank"></a><i class="fa fa-code" aria-hidden="true"></i> Sourcecode</a></button></li>
         </ul>
     </div>
     <div id="tab-0" class="tab-content active">
@@ -147,11 +204,11 @@
         <div class="image-block">
             <img id="competition-image" alt="competition-image" src="./img/competition.png" />
         </div>
-        <p>題目說明</p>
+        <p>一、題目說明</p>
         <p>Dataset: Kaggle - Mercari Price Suggestion Challenge</p>
         <p>Macari為一個網路二手交易平台，而這次的dataset便是其提供於kaggle上的資料，資料包含了商品名稱、商品狀態、貨運、拍賣者描述、商品類別等... 其中許多attributes都是文字，所以這次的project主要考驗的是如何處裡文字，已達到準確的價格預測。</p>
         <br>
-        <p>Evaluation</p>
+        <p>二、Evaluation</p>
         <p>The evaluation metric for this competition is Root Mean Squared Logarithmic Error.</p>
         <p>The RMSLE is calculated as</p>
         <div class="image-block">
@@ -167,12 +224,82 @@
     </div>
     <div id="tab-1" class="tab-content hide">
       <h2 class="content-title">Features Overview</h2>
+      <div class="content">
+        <p>ㄧ、欄位概觀</p>
+        <p>資料中,欄位不多,只有八欄,基本上就是購物網站上會看到的那些資訊,如產品名稱、分類、品牌、產 品新舊、價格、是否含運費及商品敘述。產品新舊的部分是從1-5分等級的;而產品分類欄位內包括了三個分類由斜線分開;是否含運費的部分由1代表價格含運費,0代表運費自付 。絕大部分的欄位都是文字,包括了產品名稱、分類、品牌及商品敘述。資料中,training set跟testing set都只有分類及品牌有null值</p>
+        <div class="tableStyle">
+          <table>
+            <thead>
+              <tr>
+                <th>Column</th>
+                <th>id</th>
+                <th>name</th>
+                <th>Item_condition_id</th>
+                <th>Category_name</th>
+                <th>brand_name</th>
+                <th>price</th>
+                <th>shipping</th>
+                <th>Item_description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Type</td>
+                <td>string</td>
+                <td>string</td>
+                <td>int64</td>
+                <td>string</td>
+                <td>string</td>
+                <td>numeric</td>
+                <td>binary</td>
+                <td>string</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>二、價錢與敘述長度Scatter plot</p>
+        <p>這裡可以看到 ,其實商品新舊1-3的商品價格分布差異並不大,只有新舊為4-5的商品明顯價格較低;而關於商品敘述的長度的話,基本上長度超過500之後的商品就不太出現高價品了。</p>
+        <img id="label"  src="./img/label.png" />
+        <div class="image-block">
+          <img id="featureOverview-1" src="./img/featureOverview-1.png" />
+          <img id="featureOverview-2"  src="./img/featureOverview-2.png" />
+        </div>
+        <p>三、General category 價錢分布</p>
+        <p>以美妝、電子產品及古著還有女裝最多高價 商品,但是主要分類的商品平均價格相差不 多,而橘色為含運的商品 ,藍色為不含運費的 商品,基本上並沒有除了上述的四種分類 ,其 他的品項有含運的商品價格偏高</p>
+        <p>( 0 : Beauty
+            1 : Eletronics 2 : Handmade 3 : Home
+            4 : Kids
+            5 : Men
+            6 : No category
+            7 : Others
+            8 : Sports & outdoors
+            9 : Vintage & Collectibles 10 : Women )
+        </p>
+        <div class="image-block">
+            <img id="category_distribution" src="./img/category_distribution.png" />
+        </div>
+        <p>四、Category cluster 結果</p>
+        <p>其中個數比較少的群其實群 內的分類都十分相似 ,如第12群['Outdoors', 'Artwork', 'Posters & Prints', 'Painting', 'Paintings', 'Drawings', 'Magazines', 'Patterns', 'Sculptures', 'Magnets', 'Bookmark', 'Photographs', 'Postcard', 'Illustration', 'Frames', 'Collages', 'Portraits'] 及第19群 ['NFL', 'MLB', 'NCAA', 'NBA', 'Bowl', 'NHL', 'Pitcher', 'Draft Stoppers']</p>
+        <div class="image-block">
+            <img id="cluster_outcome" src="./img/cluster_outcome.png" />
+        </div>
+        <p>五、Correlation plot</p>
+        <p>這裡可以看到,General category與價格關係的 正相關最大,而商品名稱及敘述長度為負相關 , 而有含運費的商品事實上價格並沒有比較高</p>
+        <div class="image-block">
+            <img id="correlation_plot" src="./img/correlation_plot.png" />
+        </div>
+      </div>
     </div>
     <div id="tab-2" class="tab-content hide">
       <h2 class="content-title">Preprocessing</h2>
+      <div class="content">
+      </div>
     </div>
     <div id="tab-3" class="tab-content hide">
       <h2 class="content-title">Apply Models</h2>
+      <div class="content">
+        
+      </div>
     </div>
   </body>
   <span id="footer-message">Group Members: 王選仲(法科碩二)、王韋勝(地政四)、張銘仁(資科三)、林建甫(資科三)、張為淳(資管五)</span>
